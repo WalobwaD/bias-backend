@@ -2,6 +2,8 @@ package com.Housing.Bias.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "form")
 public class FormEntity {
@@ -13,6 +15,84 @@ public class FormEntity {
 
     @Column(name="address")
     private String address;
+
+    @Column(name="zip_code")
+    private int zipCode;
+
+    @Column(name="country")
+    private String country;
+
+    @Column(name="state")
+    private String state;
+
+    @Column(name = "distance_from_subject")
+    private double distanceFromSubject;
+
+    @Column(name = "sale")
+    private String sale;
+
+    @Column(name = "sale_price")
+    private BigDecimal salePrice;
+
+    @Column(name = "year_built")
+    private int yearBuild;
+
+    @Column(name = "style")
+    private String style;
+
+    @Column(name = "baths_full")
+    private int bathsFull;
+
+    @Column(name = "baths_half")
+    private int bathsHalf;
+
+    @Column(name = "garage_det")
+    private int garageDet;
+
+    @Column(name = "garage_att")
+    private int garageAtt;
+
+    @Column(name = "basement")
+    private String basement;
+
+    @Column(name = "unfinished_ful")
+    private String unfinishedFull;
+
+    @Column(name = "unfinished_partial")
+    private String unfinishedPartial;
+
+    @Column(name = "finished_ful")
+    private String finishedFull;
+
+    @Column(name = "finished_partial")
+    private String finishedPartial;
+
+    @Column(name = "house_condition")
+    private String condition;
+
+    @Column(name = "construction")
+    private String construction;
+
+    @Column(name = "qtyConstruction")
+    private int qtyConstruction;
+
+    @Column(name = "lotSize")
+    private double lotSize;
+
+    @Column(name = "utilities")
+    private String utilities;
+
+    @Column(name = "pool")
+    private boolean pool;
+
+    @Column(name = "corner")
+    private String corner;
+
+    @Column(name = "other_feature")
+    private String otherFeatures;
+
+    @Column(name = "other")
+    private String other;
 
     @Column(name = "type")
     private String type;  // Assuming the type of the house is a String

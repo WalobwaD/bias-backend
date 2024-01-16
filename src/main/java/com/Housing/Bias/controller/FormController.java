@@ -1,13 +1,20 @@
 package com.Housing.Bias.controller;
 
 
-
+import com.Housing.Bias.entity.FormEntity;
+import com.Housing.Bias.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.text.Normalizer;
+import java.util.Collections;
 import java.util.List;
 @RestController
 @RequestMapping("/form")
@@ -18,21 +25,17 @@ public class FormController {
     private FormService formservice;
 
     @GetMapping
-    public List<Form> getForm(){
-        return formservice.getAllForms();
+    public List<FormEntity> getForm(){
+        return Collections.EMPTY_LIST;
     }
 
     @PostMapping
-    public List<Form> postForms(@RequestBody List<Form> forms) {
-        return formservice.createForms(forms);
+    public List<FormEntity> postForms(@RequestBody List<FormEntity> forms) {
+        return Collections.EMPTY_LIST;
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteForm(@PathVariable Long id) {
-        if (formservice.deleteForm(id)) {
-            return new ResponseEntity<>("Form with ID " + id + " deleted successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Form with ID " + id + " not found", HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok("Okay");
     }
 
 
