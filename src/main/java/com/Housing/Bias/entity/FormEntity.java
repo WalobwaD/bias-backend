@@ -1,11 +1,17 @@
 package com.Housing.Bias.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "form")
+@Data
+@SQLDelete(sql = "UPDATE form SET deleted = true WHERE form_id=?")
+@Where(clause = "deleted=false")
 public class FormEntity {
 
     @Id
@@ -102,4 +108,7 @@ public class FormEntity {
 
     @Column(name="room")
     private long room;
+
+    private boolean deleted = Boolean.FALSE;
+
 }

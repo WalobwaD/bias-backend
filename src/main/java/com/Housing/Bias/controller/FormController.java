@@ -2,7 +2,9 @@ package com.Housing.Bias.controller;
 
 
 import com.Housing.Bias.entity.FormEntity;
+import com.Housing.Bias.model.form.request.Form;
 import com.Housing.Bias.service.FormService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,16 +28,21 @@ public class FormController {
 
     @GetMapping
     public List<FormEntity> getForm(){
-        return Collections.EMPTY_LIST;
+        return formservice.getAll();
+    }
+
+    @GetMapping("{id}")
+    public FormEntity getFormById(@PathVariable Long id){
+        return formservice.getById(id);
     }
 
     @PostMapping
-    public List<FormEntity> postForms(@RequestBody List<FormEntity> forms) {
-        return Collections.EMPTY_LIST;
+    public FormEntity postForms(@Valid @RequestBody Form form) {
+        return formservice.save(form);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteForm(@PathVariable Long id) {
-        return ResponseEntity.ok("Okay");
+    public Boolean deleteForm(@PathVariable Long id) {
+        return formservice.delete(id);
     }
 
 
