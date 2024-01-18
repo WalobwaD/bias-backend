@@ -1,5 +1,6 @@
 package com.Housing.Bias.controller;
 
+import com.Housing.Bias.entity.ForbiddenWord;
 import com.Housing.Bias.service.ForbiddenWordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/forbidden")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ForbiddenWordController{
     private ForbiddenWordsService forbiddenWordsService;
@@ -25,20 +27,16 @@ public class ForbiddenWordController{
     }
 
     @PostMapping("/check")
-    public ResponseEntity<String> checkWord(@RequestBody String word) {
-        if (forbiddenWordsService.isForbidden(word)) {
-            return new ResponseEntity<>("Word is forbidden.", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>("Word is allowed.", HttpStatus.OK);
+    public List<String> checkForbiddenWords(@RequestBody String textToCheck) {
+        return forbiddenWordsService.findForbiddenInWords(textToCheck);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<String> addForbiddenWord(@RequestBody String word) {
-        forbiddenWordsService.addForbiddenWord(word);
-        return new ResponseEntity<>("Forbidden word added successfully.", HttpStatus.OK);
+    @PostMapping
+    public ForbiddenWord addForbiddenWord(@RequestBody String word) {
+        return forbiddenWordsService.addForbiddenWord(word);
     }
 
-    @PostMapping("/remove")
+    @DeleteMapping
     public ResponseEntity<String> removeForbiddenWord(@RequestBody String word) {
         forbiddenWordsService.removeForbiddenWord(word);
         return new ResponseEntity<>("Forbidden word removed successfully.", HttpStatus.OK);

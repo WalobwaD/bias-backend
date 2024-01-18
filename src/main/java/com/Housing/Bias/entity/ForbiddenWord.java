@@ -1,10 +1,12 @@
 package com.Housing.Bias.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 
 @Entity
 @Table(name="words")
+@Data
 public class ForbiddenWord {
 
     @Id
@@ -12,26 +14,4 @@ public class ForbiddenWord {
     private Long id;
 
     private String word;
-
-    public ForbiddenWord() {
-    }
-    public ForbiddenWord(String word) {
-        this.word = word;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getWord() {
-        return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
 }
