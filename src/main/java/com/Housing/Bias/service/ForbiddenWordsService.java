@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class ForbiddenWordsService {
@@ -38,11 +41,32 @@ public class ForbiddenWordsService {
         return forbiddenWords.contains(word.toLowerCase()); // Case-insensitive check
     }
 
-    public void addForbiddenWord(String word) {
-        forbiddenWords.add(word.toLowerCase()); // Case-insensitive addition
+    public ForbiddenWord addForbiddenWord(String word) {
+        ForbiddenWord forbiddenWord =  new ForbiddenWord();
+        forbiddenWord.setWord(word);
+        return forbiddenWordRepository.save(forbiddenWord); // Case-insensitive addition
     }
 
     public void removeForbiddenWord(String word) {
         forbiddenWords.remove(word.toLowerCase()); // Case-insensitive removal
+    }
+
+    public List<String> findForbiddenInWords(final String textToCheck) {
+        final List<String> flaggedWords = forbiddenWordRepository.findAll()
+                .stream()
+                .map(ForbiddenWord::getWord)
+                .collect(Collectors.toUnmodifiableList());
+
+        List<String> flagWordsFound = new ArrayList<>();
+        for(String wordPhrase : flaggedWords) {
+            Pattern pattern = Pattern.compile("\\b" + Pattern.quote(wordPhrase) + "\\b", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(textToCheck);
+
+            if (matcher.find()) {
+                flagWordsFound.add(wordPhrase);
+            }
+        }
+
+        return flagWordsFound;
     }
 }
