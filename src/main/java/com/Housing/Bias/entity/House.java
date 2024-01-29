@@ -26,7 +26,11 @@ public class House {
 
     // One-to-one relationship with Sample entity
     @OneToOne(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Sample sample;  
+    private Sample sample;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
 
     public long getHouseId() {
