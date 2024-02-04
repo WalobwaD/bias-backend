@@ -1,49 +1,51 @@
 package com.Housing.Bias.controller;
 
-import com.Housing.Bias.entity.House;
+import com.Housing.Bias.customexception.UserNotFoundException;
+import com.Housing.Bias.dto.UserDTO;
 import com.Housing.Bias.entity.User;
-import com.Housing.Bias.service.UserService;
+import com.Housing.Bias.service.impl.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     @Autowired
-    private UserService userService;
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-    public Optional<User> getUser(User user) {
-        return userService.getUserById(user.getUserid());
-        //return userService.getUserById(user.getUserid()).orElseThrow(NoSuchElementException::new);
-        //return Optional.ofNullable(userService.getUserById(user.getUserid()).orElseThrow(NoSuchElementException::new));
-    }
-    @GetMapping
-    public List<User> getUsers() { return userService.getAllUsers(); }
-    @PostMapping
-    public User postUser(@RequestBody User user) {  return userService.createUser(user);    }
+    private final UserServiceImpl userServiceImpl;
 
-    // CREATE UPDATEUSER METHOD
-//    @PutMapping("{id}")
-//    public User updateuser(@PathVariable("id") Long id, @RequestBody User incomingUser) {
-//        Optional<User> user = userService.getUserById(id);
-//        if (user.isPresent()) {
-//            user
-//        }
-//    }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        if (userService.deleteUser(id)) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long userId) {
+        UserDTO userDTO = this.userServiceImpl.getUser(userId);
+        return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+    }
+    @PostMapping(value = "/create/user")
+    public ResponseEntity<User> createUser(@RequestBody User newUser) {
+        User userCreated = this.userServiceImpl.createUser(newUser);
+        return new ResponseEntity<User>(userCreated, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getUsers() {
+        List<User> users = userServiceImpl.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/update/{id}")
+    public User updateUser(@PathVariable("id") Long id, @RequestBody User incomingUser) throws UserNotFoundException {
+        return userServiceImpl.updateUser(id, incomingUser);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) throws UserNotFoundException {
+        if (userServiceImpl.deleteUser(id)) {
             return new ResponseEntity<>("User with ID " + id + " deleted successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("User with ID " + id + " not found", HttpStatus.NOT_FOUND);

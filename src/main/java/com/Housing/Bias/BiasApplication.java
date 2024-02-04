@@ -10,7 +10,4 @@ public class BiasApplication {
 		SpringApplication.run(BiasApplication.class, args);
 	}
 
-
-
-
 }
